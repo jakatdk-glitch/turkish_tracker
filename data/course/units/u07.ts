@@ -51,6 +51,24 @@ const unit: UnitContent = {
   ],
   exercises: [
     {
+      type: 'morph',
+      ru: 'птицы',
+      rootText: 'kuş',
+      rootRu: 'птица',
+      suffixes: ['lar'],
+      distractors: ['ler'],
+      explain: 'Последняя гласная u — твёрдая, поэтому -lar: kuşlar.',
+    },
+    {
+      type: 'morph',
+      ru: 'деревья',
+      rootText: 'ağaç',
+      rootRu: 'дерево',
+      suffixes: ['lar'],
+      distractors: ['ler'],
+      explain: 'Последняя гласная a — твёрдая, поэтому -lar: ağaçlar.',
+    },
+    {
       type: 'blank',
       ru: 'дома́ (мн. число)',
       sentence: 'ev___',

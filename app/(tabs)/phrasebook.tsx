@@ -5,7 +5,10 @@ import { useFocusEffect } from 'expo-router';
 import { Text, View, usePalette } from '@/components/Themed';
 import PhraseRow from '@/components/PhraseRow';
 import { FontSize, Radius, Spacing } from '@/constants/Tokens';
-import { PHRASEBOOK, findPhrase, type Phrase } from '@/data/phrasebook';
+import { PHRASEBOOK, findPhrase, type Phrase, type PhraseCategory } from '@/data/phrasebook';
+import { LIFE_PHRASEBOOK } from '@/data/reallife';
+
+const ALL_CATEGORIES = [...PHRASEBOOK, ...LIFE_PHRASEBOOK];
 import { listFavorites, toggleFavorite } from '@/db/queries';
 
 // null — список категорий; 'favorites' — избранное; иначе id категории.
@@ -42,7 +45,7 @@ export default function PhrasebookScreen() {
   const searchResults = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return null;
-    const all = PHRASEBOOK.flatMap((c) => c.phrases);
+    const all = ALL_CATEGORIES.flatMap((c) => c.phrases);
     return all.filter(
       (p) => p.tr.toLowerCase().includes(q) || p.ru.toLowerCase().includes(q)
     );
@@ -94,7 +97,7 @@ export default function PhrasebookScreen() {
   }
 
   if (typeof view === 'string') {
-    const category = PHRASEBOOK.find((c) => c.id === view);
+    const category = ALL_CATEGORIES.find((c) => c.id === view);
     if (category) {
       return (
         <View style={styles.container}>
@@ -105,7 +108,20 @@ export default function PhrasebookScreen() {
     }
   }
 
-  // Список категорий
+  // Список категорий: туристический разговорник + пак «Жизнь в Турции»
+  const renderCategoryRow = (item: PhraseCategory) => (
+    <Pressable
+      key={item.id}
+      style={[styles.categoryRow, { backgroundColor: palette.surface }]}
+      onPress={() => setView(item.id)}>
+      <Text style={styles.categoryEmoji}>{item.emoji}</Text>
+      <Text style={styles.categoryTitle}>{item.title}</Text>
+      <Text style={[styles.categoryCount, { color: palette.textMuted }]}>
+        {item.phrases.length}
+      </Text>
+    </Pressable>
+  );
+
   return (
     <View style={styles.container}>
       <SearchBar value={query} onChange={setQuery} />
@@ -115,29 +131,33 @@ export default function PhrasebookScreen() {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.list}
         ListHeaderComponent={
-          favorites.size > 0 ? (
-            <Pressable
-              style={[styles.categoryRow, { backgroundColor: palette.surface }]}
-              onPress={() => setView('favorites')}>
-              <Text style={styles.categoryEmoji}>⭐</Text>
-              <Text style={styles.categoryTitle}>Избранное</Text>
-              <Text style={[styles.categoryCount, { color: palette.textMuted }]}>
-                {favorites.size}
-              </Text>
-            </Pressable>
-          ) : null
+          <View style={styles.group} lightColor="transparent" darkColor="transparent">
+            {favorites.size > 0 && (
+              <Pressable
+                style={[styles.categoryRow, { backgroundColor: palette.surface }]}
+                onPress={() => setView('favorites')}>
+                <Text style={styles.categoryEmoji}>⭐</Text>
+                <Text style={styles.categoryTitle}>Избранное</Text>
+                <Text style={[styles.categoryCount, { color: palette.textMuted }]}>
+                  {favorites.size}
+                </Text>
+              </Pressable>
+            )}
+            <Text style={[styles.groupLabel, { color: palette.textMuted }]}>🧳 Туристу</Text>
+          </View>
         }
-        renderItem={({ item }) => (
-          <Pressable
-            style={[styles.categoryRow, { backgroundColor: palette.surface }]}
-            onPress={() => setView(item.id)}>
-            <Text style={styles.categoryEmoji}>{item.emoji}</Text>
-            <Text style={styles.categoryTitle}>{item.title}</Text>
-            <Text style={[styles.categoryCount, { color: palette.textMuted }]}>
-              {item.phrases.length}
+        renderItem={({ item }) => renderCategoryRow(item)}
+        ListFooterComponent={
+          <View style={styles.group} lightColor="transparent" darkColor="transparent">
+            <Text style={[styles.groupLabel, { color: palette.textMuted }]}>
+              🇹🇷 Жизнь в Турции
             </Text>
-          </Pressable>
-        )}
+            <Text style={[styles.groupDesc, { color: palette.textMuted }]}>
+              разговорник резидента: икамет, аренда, банк, врач, коммуналка
+            </Text>
+            {LIFE_PHRASEBOOK.map(renderCategoryRow)}
+          </View>
+        }
       />
     </View>
   );
@@ -184,6 +204,19 @@ const styles = StyleSheet.create({
   list: {
     gap: Spacing.sm,
     paddingBottom: Spacing.xl,
+  },
+  group: {
+    gap: Spacing.sm,
+  },
+  groupLabel: {
+    fontSize: FontSize.small,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    marginTop: Spacing.sm,
+  },
+  groupDesc: {
+    fontSize: FontSize.caption,
+    marginTop: -Spacing.xs,
   },
   categoryRow: {
     flexDirection: 'row',

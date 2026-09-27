@@ -92,7 +92,7 @@ export default function CultureScreen() {
   if (section === 'tales') {
     return (
       <View style={styles.container}>
-        <BackHeader title="📖 Сказки Насреддина Ходжи" onBack={() => setSection(null)} />
+        <BackHeader title="📖 Сказки" onBack={() => setSection(null)} />
         <FlatList
           data={TALES}
           keyExtractor={(item) => item.id}
@@ -210,6 +210,19 @@ export default function CultureScreen() {
 
       <Pressable
         style={[styles.sectionCard, { backgroundColor: palette.surface }]}
+        onPress={() => router.push('/word-lab')}>
+        <Text style={styles.sectionEmoji}>🧪</Text>
+        <View style={styles.sectionText} lightColor="transparent" darkColor="transparent">
+          <Text style={styles.sectionTitle}>Лаборатория слов</Text>
+          <Text style={[styles.sectionDesc, { color: palette.textMuted }]}>
+            конструктор морфологии · собери любое слово из суффиксов
+          </Text>
+        </View>
+        <Text style={[styles.chevron, { color: palette.textMuted }]}>›</Text>
+      </Pressable>
+
+      <Pressable
+        style={[styles.sectionCard, { backgroundColor: palette.surface }]}
         onPress={() => setSection('proverbs')}>
         <Text style={styles.sectionEmoji}>🧿</Text>
         <View style={styles.sectionText} lightColor="transparent" darkColor="transparent">
@@ -253,7 +266,7 @@ export default function CultureScreen() {
         onPress={() => setSection('tales')}>
         <Text style={styles.sectionEmoji}>📖</Text>
         <View style={styles.sectionText} lightColor="transparent" darkColor="transparent">
-          <Text style={styles.sectionTitle}>Сказки Насреддина Ходжи</Text>
+          <Text style={styles.sectionTitle}>Сказки</Text>
           <Text style={[styles.sectionDesc, { color: palette.textMuted }]}>
             {TALES.length} историй · параллельное чтение с озвучкой
           </Text>
@@ -294,7 +307,7 @@ function CultureOfTheDay({
           <View style={styles.sectionText} lightColor="transparent" darkColor="transparent">
             <Text style={styles.sectionTitle}>{daily.tale.title}</Text>
             <Text style={[styles.sectionDesc, { color: palette.textMuted }]}>
-              Сказка Насреддина Ходжи · читать
+              Турецкая сказка · читать
             </Text>
           </View>
           <Text style={[styles.chevron, { color: palette.textMuted }]}>›</Text>

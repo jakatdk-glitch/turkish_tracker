@@ -81,6 +81,19 @@ export default function LearnScreen() {
 
       <ProverbOfTheDay />
 
+      <Pressable
+        style={[styles.labCard, { backgroundColor: palette.surface }]}
+        onPress={() => router.push('/word-lab')}>
+        <Text style={styles.labEmoji}>🧪</Text>
+        <View style={styles.labText} lightColor="transparent" darkColor="transparent">
+          <Text style={styles.labTitle}>Лаборатория слов</Text>
+          <Text style={[styles.labDesc, { color: palette.textMuted }]}>
+            собери слово как конструктор — гармония сама подставит суффиксы
+          </Text>
+        </View>
+        <Text style={[styles.labChevron, { color: palette.textMuted }]}>›</Text>
+      </Pressable>
+
       {currentUnit ? (
         <Pressable
           style={[styles.continueCard, { backgroundColor: palette.primary }]}
@@ -252,6 +265,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  labCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+    padding: Spacing.lg,
+    borderRadius: Radius.lg,
+  },
+  labEmoji: {
+    fontSize: 28,
+  },
+  labText: {
+    flex: 1,
+    gap: 2,
+  },
+  labTitle: {
+    fontSize: FontSize.medium,
+    fontWeight: '700',
+  },
+  labDesc: {
+    fontSize: FontSize.caption,
+  },
+  labChevron: {
+    fontSize: FontSize.title,
   },
   statsRow: {
     flexDirection: 'row',

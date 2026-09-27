@@ -58,6 +58,24 @@ const unit: UnitContent = {
   ],
   exercises: [
     {
+      type: 'morph',
+      ru: 'на работе',
+      rootText: 'iş',
+      rootRu: 'работа',
+      suffixes: ['te'],
+      distractors: ['de', 'ta'],
+      explain: 'ş — глухая согласная, поэтому d отвердевает: iş + de → işte.',
+    },
+    {
+      type: 'morph',
+      ru: 'в домах',
+      rootText: 'ev',
+      rootRu: 'дом',
+      suffixes: ['ler', 'de'],
+      distractors: ['lar', 'da'],
+      explain: 'Первая цепочка из двух суффиксов: ev + ler (мн. ч.) + de (где?) = evlerde.',
+    },
+    {
       type: 'blank',
       ru: 'дома',
       sentence: 'ev___',

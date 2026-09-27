@@ -85,6 +85,8 @@ function RootLayoutNav({ onboarded }: { onboarded: boolean }) {
         <Stack.Screen name="test/[unitId]" options={{ title: 'Тест' }} />
         <Stack.Screen name="tale/[taleId]" options={{ title: 'Сказка' }} />
         <Stack.Screen name="culture-quiz" options={{ title: 'Квиз' }} />
+        <Stack.Screen name="word-lab" options={{ title: 'Лаборатория слов' }} />
+        <Stack.Screen name="donate" options={{ title: 'Поддержать автора' }} />
       </Stack>
     </ThemeProvider>
   );

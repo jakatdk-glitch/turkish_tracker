@@ -51,6 +51,15 @@ export type Exercise =
       explain?: string;
     }
   | {
+      type: 'morph';
+      ru: string; // что собрать («в моих домах»)
+      rootText: string; // корень — уже стоит в начале слова (может быть озвончён: kitab-)
+      rootRu: string; // подпись корня
+      suffixes: string[]; // правильные суффиксы по порядку
+      distractors: string[]; // неверные варианты (обычно ломают гармонию)
+      explain?: string;
+    }
+  | {
       type: 'listen';
       tr: string; // что озвучить
       options: string[];

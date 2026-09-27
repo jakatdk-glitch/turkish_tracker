@@ -1,4 +1,4 @@
-import type { UnitContent } from '@/logic/course';
+import type { UnitContent, VocabItem } from '@/logic/course';
 import { buildReverseChoices } from '@/logic/reverseExercises';
 
 import u01 from './u01';
@@ -67,6 +67,11 @@ const UNITS: Record<string, UnitContent> = {
   u30,
   u31,
 };
+
+// Весь словарь курса одним списком — например, для лексикона «рентгена слова».
+export function getAllVocab(): VocabItem[] {
+  return Object.values(UNITS).flatMap((u) => u.vocab);
+}
 
 export function getUnitContent(unitId: string): UnitContent | null {
   const unit = UNITS[unitId];

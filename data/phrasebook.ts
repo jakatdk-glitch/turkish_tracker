@@ -1,3 +1,5 @@
+import { LIFE_PHRASEBOOK } from './reallife';
+
 export interface Phrase {
   id: string;
   tr: string;
@@ -159,7 +161,7 @@ export const PHRASEBOOK: PhraseCategory[] = [
 ];
 
 export function findPhrase(id: string): Phrase | undefined {
-  for (const category of PHRASEBOOK) {
+  for (const category of [...PHRASEBOOK, ...LIFE_PHRASEBOOK]) {
     const phrase = category.phrases.find((p) => p.id === id);
     if (phrase) return phrase;
   }

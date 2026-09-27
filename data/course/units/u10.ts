@@ -51,6 +51,24 @@ const unit: UnitContent = {
   ],
   exercises: [
     {
+      type: 'morph',
+      ru: 'мой дом',
+      rootText: 'ev',
+      rootRu: 'дом',
+      suffixes: ['im'],
+      distractors: ['ım', 'um'],
+      explain: 'ev → мягкая гласная e → связка -im: evim.',
+    },
+    {
+      type: 'morph',
+      ru: 'в моём доме',
+      rootText: 'ev',
+      rootRu: 'дом',
+      suffixes: ['im', 'de'],
+      distractors: ['ım', 'da'],
+      explain: 'Цепочка: ev + im (мой) + de (где?) = evimde. Порядок суффиксов всегда такой.',
+    },
+    {
       type: 'blank',
       ru: 'моя мама (кончается на гласную)',
       sentence: 'anne___',

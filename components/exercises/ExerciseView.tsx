@@ -3,6 +3,7 @@ import ChoiceExercise from '@/components/exercises/ChoiceExercise';
 import MatchExercise from '@/components/exercises/MatchExercise';
 import BlankExercise from '@/components/exercises/BlankExercise';
 import AssembleExercise from '@/components/exercises/AssembleExercise';
+import MorphExercise from '@/components/exercises/MorphExercise';
 import type { Exercise } from '@/logic/course';
 
 export default function ExerciseView({
@@ -55,6 +56,18 @@ export default function ExerciseView({
           ru={exercise.ru}
           words={exercise.words}
           correct={exercise.correct}
+          explain={hideExplain ? undefined : exercise.explain}
+          onResult={onResult}
+        />
+      );
+    case 'morph':
+      return (
+        <MorphExercise
+          ru={exercise.ru}
+          rootText={exercise.rootText}
+          rootRu={exercise.rootRu}
+          suffixes={exercise.suffixes}
+          distractors={exercise.distractors}
           explain={hideExplain ? undefined : exercise.explain}
           onResult={onResult}
         />

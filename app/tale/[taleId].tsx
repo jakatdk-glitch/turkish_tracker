@@ -4,10 +4,12 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { Text, View, usePalette } from '@/components/Themed';
 import SpeakButton from '@/components/SpeakButton';
+import WordXrayModal from '@/components/WordXray';
 import { FontSize, Radius, Spacing } from '@/constants/Tokens';
 import { findTale } from '@/data/tales';
 import { addReviewWord, markTaleRead } from '@/db/queries';
 import { speakTurkish, stopSpeaking } from '@/logic/tts';
+import { cleanToken } from '@/logic/wordXray';
 import { todayStr } from '@/logic/streak';
 
 export default function TaleScreen() {
@@ -19,6 +21,7 @@ export default function TaleScreen() {
   const [activeIdx, setActiveIdx] = useState(-1);
   const [reading, setReading] = useState(false);
   const [added, setAdded] = useState(false);
+  const [xrayWord, setXrayWord] = useState<string | null>(null);
   const cancelled = useRef(false);
 
   useEffect(() => {
@@ -95,35 +98,52 @@ export default function TaleScreen() {
         </View>
       </View>
 
-      <Pressable
-        style={[styles.readBtn, { backgroundColor: reading ? palette.surface : palette.primary }]}
-        onPress={reading ? stopReading : readAll}>
-        <Text
-          style={[styles.readBtnText, { color: reading ? palette.text : palette.onPrimary }]}>
-          {reading ? '⏸ Остановить' : '▶ Прочитать всю сказку'}
-        </Text>
-      </Pressable>
+      <Text style={[styles.readHint, { color: palette.textMuted }]}>
+        Нажми на любое слово — 🔬 рентген разберёт его на морфемы. Кнопка 🔊 озвучит
+        предложение, кнопка ниже — всю сказку.
+      </Text>
 
       <View style={styles.sentences} lightColor="transparent" darkColor="transparent">
         {tale.sentences.map((s, i) => (
-          <Pressable
+          <View
             key={i}
             style={[
               styles.sentence,
               { backgroundColor: palette.surface },
               activeIdx === i && { borderColor: palette.primary, borderWidth: 2 },
             ]}
-            onPress={() => speakTurkish(s.tr)}>
+            lightColor="transparent"
+            darkColor="transparent">
             <View style={styles.sentenceRow} lightColor="transparent" darkColor="transparent">
-              <Text style={styles.sentenceTr}>{s.tr}</Text>
+              <Text style={styles.sentenceTr}>
+                {s.tr.split(' ').map((w, wi, arr) => (
+                  <Text
+                    key={wi}
+                    suppressHighlighting
+                    onPress={() => {
+                      if (cleanToken(w)) setXrayWord(w);
+                    }}>
+                    {w + (wi < arr.length - 1 ? ' ' : '')}
+                  </Text>
+                ))}
+              </Text>
               <SpeakButton text={s.tr} size="sm" />
             </View>
             {showTranslation && (
               <Text style={[styles.sentenceRu, { color: palette.textMuted }]}>{s.ru}</Text>
             )}
-          </Pressable>
+          </View>
         ))}
       </View>
+
+      <Pressable
+        style={[styles.readBtn, { backgroundColor: reading ? palette.surface : palette.primary }]}
+        onPress={reading ? stopReading : readAll}>
+        <Text
+          style={[styles.readBtnText, { color: reading ? palette.text : palette.onPrimary }]}>
+          {reading ? '⏸ Остановить' : '▶ Прослушать всю сказку'}
+        </Text>
+      </Pressable>
 
       <View style={[styles.vocabCard, { backgroundColor: palette.surface }]}>
         <Text style={styles.vocabTitle}>Слова из сказки</Text>
@@ -150,6 +170,8 @@ export default function TaleScreen() {
           </Pressable>
         )}
       </View>
+
+      <WordXrayModal word={xrayWord} onClose={() => setXrayWord(null)} />
     </ScrollView>
   );
 }
@@ -184,6 +206,10 @@ const styles = StyleSheet.create({
   },
   toggleLabel: {
     fontSize: FontSize.body,
+  },
+  readHint: {
+    fontSize: FontSize.caption,
+    lineHeight: 18,
   },
   readBtn: {
     paddingVertical: Spacing.md,

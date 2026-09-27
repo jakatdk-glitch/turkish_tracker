@@ -29,6 +29,12 @@ export function describeExercise(ex: Exercise): ExerciseDigest {
         prompt: 'Соедини пары',
         answer: ex.pairs.map((p) => `${p.tr} — ${p.ru}`).join(', '),
       };
+    case 'morph':
+      return {
+        prompt: ex.ru,
+        answer: ex.rootText + ex.suffixes.join(''),
+        explain: ex.explain,
+      };
     case 'listen':
       return { prompt: 'Аудирование', answer: ex.options[ex.correct] };
   }
