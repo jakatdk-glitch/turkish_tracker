@@ -1,6 +1,6 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { router, Tabs } from 'expo-router';
-import { Pressable, Text, type ColorValue } from 'react-native';
+import { Tabs } from 'expo-router';
+import { type ColorValue } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -39,15 +39,6 @@ export default function TabLayout() {
           title: 'Учиться',
           tabBarIcon: ({ color }) => (
             <TabIcon color={color} ios="graduationcap.fill" material="school" />
-          ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => router.push('/donate')}
-              hitSlop={12}
-              style={{ paddingHorizontal: 16 }}
-              accessibilityLabel="Поддержать автора">
-              <Text style={{ fontSize: 20 }}>💛</Text>
-            </Pressable>
           ),
         }}
       />
