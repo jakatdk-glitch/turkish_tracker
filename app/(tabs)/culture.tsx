@@ -45,7 +45,7 @@ export default function CultureScreen() {
     }, [])
   );
 
-  async function onToggleFavorite(id: string) {
+  const onToggleFavorite = useCallback(async (id: string) => {
     const nowFav = await toggleFavorite('proverb', id);
     setFavorites((prev) => {
       const next = new Set(prev);
@@ -53,7 +53,7 @@ export default function CultureScreen() {
       else next.delete(id);
       return next;
     });
-  }
+  }, []);
 
   if (section === 'proverbs') {
     return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Text, View, usePalette } from '@/components/Themed';
@@ -6,7 +6,7 @@ import SpeakButton from '@/components/SpeakButton';
 import { FontSize, Radius, Spacing } from '@/constants/Tokens';
 import type { Proverb } from '@/data/proverbs';
 
-export default function ProverbCard({
+export default memo(function ProverbCard({
   proverb,
   isFavorite,
   onToggleFavorite,
@@ -56,7 +56,7 @@ export default function ProverbCard({
       )}
     </Pressable>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {

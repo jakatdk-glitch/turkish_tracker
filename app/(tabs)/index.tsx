@@ -70,6 +70,9 @@ export default function LearnScreen() {
             source={require('@/assets/lottie/streak.json')}
             fallbackEmoji="🔥"
             size={28}
+            // Бесконечный цикл внутри ScrollView заставляет Android перерисовывать
+            // экран каждый кадр — прокрутка начинает дёргаться. Играем один раз при входе.
+            loop={false}
           />
           <Text style={styles.statChip}>{profile.current_streak}</Text>
         </View>

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Text, View, usePalette } from '@/components/Themed';
@@ -5,7 +6,7 @@ import SpeakButton from '@/components/SpeakButton';
 import { FontSize, Radius, Spacing } from '@/constants/Tokens';
 import type { Phrase } from '@/data/phrasebook';
 
-export default function PhraseRow({
+export default memo(function PhraseRow({
   phrase,
   isFavorite,
   onToggleFavorite,
@@ -31,7 +32,7 @@ export default function PhraseRow({
       </Pressable>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   row: {

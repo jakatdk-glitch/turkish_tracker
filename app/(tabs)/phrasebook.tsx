@@ -32,7 +32,7 @@ export default function PhrasebookScreen() {
     }, [])
   );
 
-  async function onToggleFavorite(id: string) {
+  const onToggleFavorite = useCallback(async (id: string) => {
     const nowFav = await toggleFavorite('phrase', id);
     setFavorites((prev) => {
       const next = new Set(prev);
@@ -40,7 +40,7 @@ export default function PhrasebookScreen() {
       else next.delete(id);
       return next;
     });
-  }
+  }, []);
 
   const searchResults = useMemo(() => {
     const q = query.trim().toLowerCase();

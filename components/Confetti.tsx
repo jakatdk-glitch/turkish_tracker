@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
@@ -11,6 +11,8 @@ import Animated, {
 import { usePalette } from '@/components/Themed';
 
 const PIECE_COUNT = 42;
+// Максимум задержки (700) + длительности (3500) с запасом.
+const LIFETIME_MS = 4500;
 
 function Piece({ color, fallHeight }: { color: string; fallHeight: number }) {
   const progress = useSharedValue(0);
@@ -65,6 +67,15 @@ export default function Confetti() {
   const palette = usePalette();
   const fallHeight = Dimensions.get('window').height + 32;
   const colors = [palette.primary, palette.success, palette.warning, palette.danger, palette.info];
+  const [done, setDone] = useState(false);
+
+  // Отыгравшие кусочки убираем, чтобы оверлей не висел поверх прокручиваемого экрана.
+  useEffect(() => {
+    const t = setTimeout(() => setDone(true), LIFETIME_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (done) return null;
 
   return (
     <View style={[StyleSheet.absoluteFill, styles.overlay]}>
